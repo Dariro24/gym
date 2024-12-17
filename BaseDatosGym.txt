@@ -1,0 +1,117 @@
+
+CREATE TABLE clientes (
+  id_cliente SERIAL PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  cedula VARCHAR(20) NOT NULL UNIQUE,
+  telefono VARCHAR(20) NOT NULL,
+  correo_electronico VARCHAR(100) NOT NULL,
+  edad INTEGER NOT NULL,
+  estatura REAL NOT NULL,
+  responsable_id INTEGER,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE responsables (
+  id_responsable SERIAL PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  cedula VARCHAR(20) NOT NULL UNIQUE,
+  telefono VARCHAR(20) NOT NULL,
+  correo_electronico VARCHAR(100) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE clientes
+ADD CONSTRAINT fk_responsable
+FOREIGN KEY (responsable_id)
+REFERENCES responsables (id_responsable);
+
+CREATE TABLE empleados (
+  id_empleado SERIAL PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  cedula VARCHAR(20) NOT NULL UNIQUE,
+  telefono VARCHAR(20) NOT NULL,
+  correo_electronico VARCHAR(100) NOT NULL,
+  tipo_empleado VARCHAR(20) NOT NULL CHECK (LOWER(tipo_empleado) IN ('administrativo', 'instructor', 'limpieza', 'mantenimiento', 'atencion_al_cliente')),
+  horario_laboral VARCHAR(50) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE clases_servicios (
+  id_clase_servicio SERIAL PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  descripcion TEXT NOT NULL,
+  clasificacion VARCHAR(20) NOT NULL,
+  condiciones_uso TEXT NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE horarios_clases_servicios (
+  id_horario SERIAL PRIMARY KEY,
+  id_clase_servicio INTEGER NOT NULL,
+  dia_semana VARCHAR(10) NOT NULL,
+  hora_inicio TIME NOT NULL,
+  hora_fin TIME NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_clase_servicio)
+  REFERENCES clases_servicios (id_clase_servicio)
+);
+
+CREATE TABLE equipos_maquinas (
+  id_equipo_maquina SERIAL PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  descripcion TEXT NOT NULL,
+  estado VARCHAR(20) NOT NULL CHECK (LOWER(estado) IN ('operativa', 'inhabilitada')),
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE requisitos_acceso (
+  id_requisito SERIAL PRIMARY KEY,
+  id_clase_servicio INTEGER NOT NULL,
+  tipo_requisito VARCHAR(20) NOT NULL CHECK (LOWER(tipo_requisito) IN ('edad', 'experiencia', 'condicion_fisica')),
+  valor_requisito VARCHAR(20) NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_clase_servicio)
+  REFERENCES clases_servicios (id_clase_servicio)
+);
+
+CREATE TABLE asistencias (
+  id_asistencia SERIAL PRIMARY KEY,
+  id_cliente INTEGER NOT NULL,
+  id_clase_servicio INTEGER NOT NULL,
+  fecha DATE NOT NULL,
+  hora TIME NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_cliente)
+  REFERENCES clientes (id_cliente),
+  FOREIGN KEY (id_clase_servicio)
+  REFERENCES clases_servicios (id_clase_servicio)
+);
+
+CREATE TABLE promociones (
+  id_promocion SERIAL PRIMARY KEY,
+  nombre VARCHAR(50) NOT NULL,
+  descripcion TEXT NOT NULL,
+  fecha_inicio DATE NOT NULL,
+  fecha_fin DATE NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE clientes_frecuentes (
+  id_cliente_frecuente SERIAL PRIMARY KEY,
+  id_cliente INTEGER NOT NULL,
+  fecha_ultimo_ingreso DATE NOT NULL,
+  cantidad_ingresos INTEGER NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (id_cliente)
+  REFERENCES clientes (id_cliente)
+);
