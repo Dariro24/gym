@@ -1,4 +1,4 @@
-package com.gym.controller;
+package com.gym.controllers;
 
 import com.gym.models.Cliente;
 import com.gym.services.ClienteService;
