@@ -1,7 +1,7 @@
 package com.gym.services;
 
 import com.gym.models.Usuario;
-import com.gym.repository.UsuarioRepository;
+import com.gym.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

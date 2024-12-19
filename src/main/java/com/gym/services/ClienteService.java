@@ -1,7 +1,7 @@
 package com.gym.services;
 
 import com.gym.models.Cliente;
-import com.gym.repository.ClienteRepository;
+import com.gym.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;

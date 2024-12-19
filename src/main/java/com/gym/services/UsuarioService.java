@@ -1,7 +1,7 @@
 package com.gym.services;
 
 import com.gym.models.Usuario;
-import com.gym.repository.UsuarioRepository;
+import com.gym.repositories.UsuarioRepository;
 import com.gym.security.JwtUtil; // Importa la clase JwtUtil
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

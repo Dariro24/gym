@@ -1,4 +1,4 @@
-package com.gym.repository;
+package com.gym.repositories;
 
 import com.gym.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
