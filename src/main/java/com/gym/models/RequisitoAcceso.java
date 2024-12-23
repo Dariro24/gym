@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "requisitos_acceso")
 public class RequisitoAcceso {
 
     @Id
